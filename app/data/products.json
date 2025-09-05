@@ -1,0 +1,20 @@
+[
+  {
+    "id": 1,
+    "slug": "red-sneakers",
+    "name": "Red Sneakers",
+    "price": 799,
+    "description": "Comfortable red sneakers in all sizes.",
+    "image": "/images/red-sneakers.jpg",
+    "category": "shoes"
+  },
+  {
+    "id": 2,
+    "slug": "blue-tshirt",
+    "name": "Blue T-shirt",
+    "price": 199,
+    "description": "Soft cotton T-shirt in blue.",
+    "image": "/images/blue-tshirt.jpg",
+    "category": "clothes"
+  }
+]
