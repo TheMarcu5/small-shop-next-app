@@ -1,5 +1,5 @@
-import products from "../../data/products.json";
 import { notFound } from "next/navigation";
+import * as React from "react";
 
 type Product = {
   id: number;
@@ -14,14 +14,21 @@ type Product = {
 export const revalidate = 60; // ISR-liknande, valfritt
 
 export async function generateStaticParams() {
-  return products.map((p: Product) => ({ slug: p.slug }));
+  // Fetch all products and generate paths
+  const res = await fetch(`${process.env.BASE_URL}/products`);
+  const products: Product[] = await res.json();
+  return products.map((p) => ({ slug: p.slug }));
 }
 
-export default function ProductPage({ params }: { params: { slug: string } }) {
-  // Denna funktion körs på serversidan när någon besöker /products/[slug]
-  // Next.js skickar in params med rätt slug
-  const product = products.find((p: Product) => p.slug === params.slug);
-  if (!product) return notFound();
+// Use defensive resolution for props and params (Next 15 may make params a Promise)
+export default async function ProductPage({ params }: { params: any }) {
+  // resolve params whether it's a plain object or a Promise (concise & compatible with Next 15)
+  const { slug } = await Promise.resolve(params);
+
+  // Fetch one product based on slug
+  const res = await fetch(`${process.env.BASE_URL}/products/${slug}`);
+  if (!res.ok) return notFound();
+  const product: Product = await res.json();
 
   return (
     <div>
